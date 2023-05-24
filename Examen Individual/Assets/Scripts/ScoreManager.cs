@@ -4,15 +4,48 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static ScoreManager instance;
+
+    private int score;
+
+    public delegate void ScoreChangedDelegate(int newScore);
+    public event ScoreChangedDelegate OnScoreChanged;
+
+    private void Awake()
     {
-        
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void IncrementScore(int incrementAmount)
     {
-        
+        score += incrementAmount;
+        OnScoreChanged?.Invoke(score);
+    }
+
+    public void IncrementScoreByOne()
+    {
+        IncrementScore(1);
+    }
+
+    public void IncrementScoreByTwo()
+    {
+        IncrementScore(2);
+    }
+
+    public void IncrementScoreByThree()
+    {
+        IncrementScore(3);
+    }
+
+    public int GetScore()
+    {
+        return score;
     }
 }
